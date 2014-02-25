@@ -9,11 +9,18 @@
     ' such as the username, display name, etc.
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
+
+        'Alustetaan xmpp-kirjasto
+        Form1.xmpp = New xmpp(Me.UsernameTextBox.Text, Me.PasswordTextBox.Text)
+
+        'Vaihdetaan pääikkunaan
+        Form1.Show()
         Me.Close()
+
     End Sub
 
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
-        Me.Close()
+        End
     End Sub
 
 End Class
