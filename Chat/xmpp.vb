@@ -41,7 +41,7 @@ Public Class xmpp
 
     End Sub
 
-    Public Function sisaan()
+    Public Function sisaan() As Boolean
 
         Try
             'Yhdistä ja alusta
@@ -56,26 +56,21 @@ Public Class xmpp
         ReDim puskuriU(yhteys.SendBufferSize)
 
         'Lähetetään XML:n ja XMPP:n alustus
-        kirjoita("<?xml version='1.0'?><stream:stream to='" + palvelin + "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' version='1.0'>")
-
-        'Luetaan
-        lue()
-
-        'Tarkistetaan tuliko ID jo
-        While InStr(luku.ToLower, " id=") = 0
-            lue()
-        End While
+        kirjoita("<?xml version=""1.0"" encoding=""UTF-8""?>")
+        kirjoita("<stream:stream to='" + palvelin + "' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' version='1.0'>")
+        lue()   'XML-Muoto
+        lue()   'XMPP-Virran aloitustiedot
 
         'Nyt se tuli
-        id = luku.Substring(InStr(luku, " id=") + 4, 8)
+        id = luku.Substring(InStr(luku.ToLower, " id=") + 4, 8)
 
         'Sitten PLAIN-authentikointi (oletetaan toimivan)
         kirjoita("<iq type='set' id='" + id + "'><query xmlns='jabber:iq:auth'><username>" + tunnus + "</username><password>" + sala + "</password><resource>" + lahde + "</resource></query></iq>")
         lue()
-        If luku.ToLower.StartsWith("<iq type=""result""") Then
+        If luku.ToLower.StartsWith("<iq type=""result"" id=""" + id + """>") Then
             'Kirjautuminen onnistui
             Return True
-        ElseIf luku.ToLower.StartsWith("<iq type=""error""") Then
+        ElseIf luku.ToLower.StartsWith("<iq type=""error"" id=""" + id + """>") Then
             'Kirjautuminen epäonnistui
             Return False
         Else
@@ -97,7 +92,7 @@ Public Class xmpp
         luku = Encoding.UTF8.GetString(puskuriS)
 
         'Pistellään debugiin
-        srv2client.TextBox1.Text += luku
+        srv2client.TextBox1.Text += "<<< " + Chr(13) + Chr(10) + luku
         srv2client.TextBox1.Text += Chr(13) + Chr(10) + Chr(13) + Chr(10)
 
     End Sub
@@ -109,6 +104,14 @@ Public Class xmpp
         'Ulos
         virta.Write(puskuriU, 0, puskuriU.Length)
 
+        'Pistellään debugiin
+        srv2client.TextBox1.Text += ">>> " + Chr(13) + Chr(10) + teksti
+        srv2client.TextBox1.Text += Chr(13) + Chr(10) + Chr(13) + Chr(10)
+
     End Sub
+
+    Public Function VirranLukukelpoisuus() As Boolean
+        Return virta.DataAvailable
+    End Function
 
 End Class
