@@ -28,7 +28,6 @@ Public Class xmpp
     Dim puskuriU() As Byte
     Dim kirjoitus As String
 
-
     Public Sub New(usr As String, pw As String, Optional src As String = "VirallinenSofta", Optional srv As String = "jarkkis.dy.fi", Optional port As Integer = 5222)
 
         'Palvelin on oletuksena jarkkis.dy.fi, mutta sen voi asettaa construn kutsussa.
@@ -69,19 +68,24 @@ Public Class xmpp
 
         'Nyt se tuli
         id = luku.Substring(InStr(luku, " id=") + 4, 8)
-        MsgBox(id.ToString)
 
         'Sitten PLAIN-authentikointi (oletetaan toimivan)
         kirjoita("<iq type='set' id='" + id + "'><query xmlns='jabber:iq:auth'><username>" + tunnus + "</username><password>" + sala + "</password><resource>" + lahde + "</resource></query></iq>")
+        lue()
 
     End Sub
 
     Public Sub lue()
 
+        'Tyhjennä puskuri
+        Array.Clear(puskuriS, 0, puskuriS.Length)
+
         'Luetaan
         virta.Read(puskuriS, 0, yhteys.ReceiveBufferSize)
         'Muutetaan tekstiksi
-        luku = System.Text.Encoding.UTF8.GetString(puskuriS)
+        luku = Encoding.UTF8.GetString(puskuriS)
+
+        Form1.TextBox1.Text += luku
 
     End Sub
 
