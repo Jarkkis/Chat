@@ -98,6 +98,12 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="srv2client.Designer.vb">
+      <DependentUpon>srv2client.vb</DependentUpon>
+    </Compile>
+    <Compile Include="srv2client.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LoginForm1.Designer.vb">
       <DependentUpon>LoginForm1.vb</DependentUpon>
     </Compile>
@@ -134,6 +140,9 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="srv2client.resx">
+      <DependentUpon>srv2client.vb</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\Application.myapp">
@@ -147,11 +156,9 @@
     </None>
     <None Include="App.config" />
   </ItemGroup>
-
-<ItemGroup>
+  <ItemGroup>
     <None Include="..\README.md" />
-</ItemGroup>
-
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>

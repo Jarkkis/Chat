@@ -10,12 +10,20 @@
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
 
+        srv2client.Show()
+
         'Alustetaan xmpp-kirjasto
         Form1.xmpp = New xmpp(Me.UsernameTextBox.Text, Me.PasswordTextBox.Text)
 
-        'Vaihdetaan pääikkunaan
-        Form1.Show()
-        Me.Close()
+        If Form1.xmpp.sisaan Then
+            'Vaihdetaan pääikkunaan
+            Form1.Show()
+            Me.Close()
+        Else
+            'Virheilmoitus, koska kirjautuminen ei onnistunut
+            MsgBox("Tarkista käyttäjätunnus ja salasana!" + Chr(13) + Chr(10) + "Vika voi kyllä olla ohjelmassakin...", MsgBoxStyle.Exclamation, "Kirjautuminen ei onnistunut")
+        End If
+
 
     End Sub
 

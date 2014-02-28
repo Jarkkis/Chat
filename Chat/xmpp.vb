@@ -41,7 +41,7 @@ Public Class xmpp
 
     End Sub
 
-    Public Sub sisaan()
+    Public Function sisaan()
 
         Try
             'Yhdistä ja alusta
@@ -62,7 +62,7 @@ Public Class xmpp
         lue()
 
         'Tarkistetaan tuliko ID jo
-        While InStr(luku, " id=") = 0
+        While InStr(luku.ToLower, " id=") = 0
             lue()
         End While
 
@@ -72,8 +72,19 @@ Public Class xmpp
         'Sitten PLAIN-authentikointi (oletetaan toimivan)
         kirjoita("<iq type='set' id='" + id + "'><query xmlns='jabber:iq:auth'><username>" + tunnus + "</username><password>" + sala + "</password><resource>" + lahde + "</resource></query></iq>")
         lue()
+        If luku.ToLower.StartsWith("<iq type=""result""") Then
+            'Kirjautuminen onnistui
+            Return True
+        ElseIf luku.ToLower.StartsWith("<iq type=""error""") Then
+            'Kirjautuminen epäonnistui
+            Return False
+        Else
+            'Tunnistamaton virhe
+            MsgBox("Tuntematon vastaus palvelimelta!", MsgBoxStyle.Exclamation, "Virhe kirjautumisessa")
+            Return False
+        End If
 
-    End Sub
+    End Function
 
     Public Sub lue()
 
@@ -85,7 +96,9 @@ Public Class xmpp
         'Muutetaan tekstiksi
         luku = Encoding.UTF8.GetString(puskuriS)
 
-        Form1.TextBox1.Text += luku
+        'Pistellään debugiin
+        srv2client.TextBox1.Text += luku
+        srv2client.TextBox1.Text += Chr(13) + Chr(10) + Chr(13) + Chr(10)
 
     End Sub
 
