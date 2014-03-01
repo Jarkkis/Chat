@@ -98,10 +98,10 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="srv2client.Designer.vb">
-      <DependentUpon>srv2client.vb</DependentUpon>
+    <Compile Include="DEBUG.Designer.vb">
+      <DependentUpon>DEBUG.vb</DependentUpon>
     </Compile>
-    <Compile Include="srv2client.vb">
+    <Compile Include="DEBUG.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LoginForm1.Designer.vb">
@@ -140,8 +140,8 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="srv2client.resx">
-      <DependentUpon>srv2client.vb</DependentUpon>
+    <EmbeddedResource Include="DEBUG.resx">
+      <DependentUpon>DEBUG.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +175,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Debug.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Debug_ICO.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

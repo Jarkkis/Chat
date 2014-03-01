@@ -1,11 +1,10 @@
-﻿Imports System.Net.Sockets
-Imports System.Net.WebSockets
-Imports System.Net
+﻿Imports System.Net
+Imports System.Net.Sockets
+
 Imports System.Text
+Imports System.Text.Encoding
 
 Public Class xmpp
-
-    ' TODO: Pitäis kai sitä yhteyttä muodostella jotenki...
 
     'Palvelimen tiedot
     Private palvelin As String
@@ -18,15 +17,15 @@ Public Class xmpp
     Private id As String
 
     'Yhteys
-    Dim yhteys As New TcpClient()
-    Dim virta As NetworkStream
+    Private yhteys As New TcpClient()
+    Private virta As NetworkStream
 
     'Puskuri sisään
-    Dim puskuriS() As Byte
-    Dim luku As String
+    Private puskuriS() As Byte
+    Private luku As String
     'Puskuri ulos
-    Dim puskuriU() As Byte
-    Dim kirjoitus As String
+    Private puskuriU() As Byte
+    Private kirjoitus As String
 
     Public Sub New(usr As String, pw As String, Optional src As String = "VirallinenSofta", Optional srv As String = "jarkkis.dy.fi", Optional port As Integer = 5222)
 
@@ -76,6 +75,7 @@ Public Class xmpp
         Else
             'Tunnistamaton virhe
             MsgBox("Tuntematon vastaus palvelimelta!", MsgBoxStyle.Exclamation, "Virhe kirjautumisessa")
+            DEBUG.show()
             Return False
         End If
 
@@ -89,25 +89,38 @@ Public Class xmpp
         'Luetaan
         virta.Read(puskuriS, 0, yhteys.ReceiveBufferSize)
         'Muutetaan tekstiksi
-        luku = Encoding.UTF8.GetString(puskuriS)
+        luku = UTF8.GetString(puskuriS)
 
         'Pistellään debugiin
-        srv2client.TextBox1.Text += "<<< " + Chr(13) + Chr(10) + luku
-        srv2client.TextBox1.Text += Chr(13) + Chr(10) + Chr(13) + Chr(10)
+        DEBUG.TextBox1.Text += "<<< " + Chr(13) + Chr(10) + luku
+        DEBUG.TextBox1.Text += Chr(13) + Chr(10) + Chr(13) + Chr(10)
 
     End Sub
 
     Public Sub kirjoita(teksti As String)
 
         'Muutetaan taulukoksi
-        puskuriU = Encoding.UTF8.GetBytes(teksti)
+        puskuriU = UTF8.GetBytes(teksti)
         'Ulos
         virta.Write(puskuriU, 0, puskuriU.Length)
 
         'Pistellään debugiin
-        srv2client.TextBox1.Text += ">>> " + Chr(13) + Chr(10) + teksti
-        srv2client.TextBox1.Text += Chr(13) + Chr(10) + Chr(13) + Chr(10)
+        DEBUG.TextBox1.Text += ">>> " + Chr(13) + Chr(10) + teksti
+        DEBUG.TextBox1.Text += Chr(13) + Chr(10) + Chr(13) + Chr(10)
 
+    End Sub
+
+    Public Sub haeTunnukset(Optional vainOnline As Boolean = True)
+
+        'Ei huomioida roskadataa
+        While VirranLukukelpoisuus()
+            lue()
+        End While
+
+        'Lähetetään pyyntö
+        kirjoita("<iq from=""" + tunnus + "@" + palvelin + "/" + lahde + """ id=""" + id + """ type=""get""><query xmlns=""jabber:iq:roster""/></iq>")
+        'Vastaus
+        lue()
     End Sub
 
     Public Function VirranLukukelpoisuus() As Boolean

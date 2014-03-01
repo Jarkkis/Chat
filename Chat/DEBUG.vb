@@ -1,7 +1,6 @@
-﻿Public Class srv2client
+﻿Public Class DEBUG
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-
         'AutoScroll
         TextBox1.Select(TextBox1.TextLength, 0)
         TextBox1.ScrollToCaret()
@@ -18,6 +17,14 @@
             Form1.xmpp.lue()
         End If
 
+    End Sub
+
+    Public Overloads Sub show()
+        'Alkuperäinen suoritus
+        MyBase.Show()
+        'AutoScroll
+        TextBox1.Select(TextBox1.TextLength, 0)
+        TextBox1.ScrollToCaret()
     End Sub
 
 End Class

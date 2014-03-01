@@ -10,8 +10,6 @@
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
 
-        srv2client.Show()
-
         'Alustetaan xmpp-kirjasto
         Form1.xmpp = New xmpp(Me.UsernameTextBox.Text, Me.PasswordTextBox.Text)
 
@@ -29,6 +27,14 @@
 
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
         End
+    End Sub
+
+    Private Sub LoginForm1_Load(sender As Object, e As EventArgs) Handles Me.Load
+
+        'Alustetaan DEBUG-Ikkuna. En parempaakaan keksinyt...
+        DEBUG.show()
+        DEBUG.Hide()
+
     End Sub
 
 End Class
